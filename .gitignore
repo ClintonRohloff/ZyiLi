@@ -1,129 +1,171 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+import kivy
+kivy.require("2.0.0")
 
-# C extensions
-*.so
+from kivy.app import App
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.button import Button
+from kivy.uix.label import Label
+from kivy.uix.behaviors.focus import FocusBehavior
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+user_data = {}
+user_ids = 0
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+class FirstScreen(Screen):
+    pass
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+class SecondScreen(Screen):
+    pass
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
+class ThirdScreen(Screen):
+    pass
 
-# Translations
-*.mo
-*.pot
+class WindowManager(ScreenManager):
+    pass
 
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
+class MyApp(App):
 
-# Flask stuff:
-instance/
-.webassets-cache
+    # The below function controls the application's button to submit a user's data.
+    # The button's function loads the user data into a dictionary called user_data and assigns a unique
+    # user identification number.
 
-# Scrapy stuff:
-.scrapy
+    def SubmitButton(self):
 
-# Sphinx documentation
-docs/_build/
+        global user_ids
+        user_ids += 1
 
-# PyBuilder
-target/
+        firstname = self.root.ids.first.ids.first_name.text
+        lastname = self.root.ids.first.ids.last_name.text
+        full_name = lastname + ", " + firstname
 
-# Jupyter Notebook
-.ipynb_checkpoints
+        age = self.root.ids.first.ids.age.text
 
-# IPython
-profile_default/
-ipython_config.py
+        male = self.root.ids.first.ids.male.active
+        female = self.root.ids.first.ids.female.active
+        other = self.root.ids.first.ids.other.active
+        sex = ""
+        sexual_orientation = ""
 
-# pyenv
-.python-version
+        e_mail = self.root.ids.first.ids.e_mail.text
+        phone = self.root.ids.first.ids.phone.text
 
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
+        if male == True:
+            sex = "Male"
+        elif female == True:
+            sex = "Female"
+        elif other == True:
+            sex = "Other"
+        else:
+            print("Throw Error")
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
+        if self.root.ids.first.ids.sexual_orientation.text == "Homosexual":
+            sexual_orientation = "Homosexual"
+        elif self.root.ids.first.ids.sexual_orientation.text == "Heterosexual":
+            sexual_orientation = "Heterosexual"
+        elif self.root.ids.first.ids.sexual_orientation.text == "Bisexual/Other":
+            sexual_orientation = "Bisexual/Other"
+        else:
+            pass
 
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
+        user = {user_ids: [full_name, age, sex, sexual_orientation, e_mail, phone, user_ids]}
 
-# SageMath parsed files
-*.sage.py
+        if user not in user_data.items():
+            user_data.update(user)
 
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+        self.root.ids.second.ids.user_info.clear_widgets(children = None)
+        print(user_data)
 
-# Spyder project settings
-.spyderproject
-.spyproject
+        for key, value in user_data.items():
 
-# Rope project settings
-.ropeproject
+            self.root.ids.second.ids.user_info.add_widget(Button(text = value[0], size_hint = (None, None), height = 20, width = 200, text_size = (200, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+            self.root.ids.second.ids.user_info.add_widget(Label(text = value[1], size_hint = (None, None), height = 20, width = 20, text_size = (20, 20), halign = "center"))
+            self.root.ids.second.ids.user_info.add_widget(Label(text = value[2], size_hint = (None, None), height = 20, width = 50, text_size = (50, 20), halign = "center"))
+            self.root.ids.second.ids.user_info.add_widget(Label(text = value[3], size_hint = (None, None), height = 20, width = 100, text_size = (100, 20), halign = "center"))
+            self.root.ids.second.ids.user_info.add_widget(Label(text = value[4], size_hint = (None, None), height = 20, width = 150, text_size = (150, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+            self.root.ids.second.ids.user_info.add_widget(Label(text = value[5], size_hint = (None, None), height=20, width = 100, text_size = (100, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
 
-# mkdocs documentation
-/site
+    # The below function controls the application's spinner which organizes the users' data.
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
+    def DataSpinner(self):
 
-# Pyre type checker
-.pyre/
+        if self.root.ids.second.ids.dataspinner.text == "Name":
+            self.root.ids.second.ids.user_info.clear_widgets(children=None)
+
+            organized_user_data = list(user_data.values())
+            organized_user_data.sort(key=lambda x: x[0])
+
+            for value in organized_user_data:
+                self.root.ids.second.ids.user_info.add_widget(Button(text=value[0], size_hint=(None, None), height=20, width = 200, text_size = (200, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[1], size_hint=(None, None), height=20, width = 20, text_size = (20, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[2], size_hint=(None, None), height=20, width = 50, text_size = (50, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[3], size_hint=(None, None), height=20, width = 100, text_size = (100, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[4], size_hint=(None, None), height=20, width = 150, text_size = (150, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[5], size_hint=(None, None), height=20, width = 100, text_size = (100, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+
+        # The below lambda function is different to ensure that ages are sorted with an integer and not a string.
+
+        elif self.root.ids.second.ids.dataspinner.text == "Age":
+            self.root.ids.second.ids.user_info.clear_widgets(children=None)
+
+            organized_user_data = list(user_data.values())
+            organized_user_data.sort(key=lambda x: int(x[1]))
+            print(organized_user_data)
+
+            for value in organized_user_data:
+                self.root.ids.second.ids.user_info.add_widget(Button(text=value[0], size_hint=(None, None), height=20, width = 200, text_size = (200, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[1], size_hint=(None, None), height=20, width = 20, text_size = (20, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[2], size_hint=(None, None), height=20, width = 50, text_size = (50, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[3], size_hint=(None, None), height=20, width = 100, text_size = (100, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[4], size_hint=(None, None), height=20, width = 150, text_size = (150, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[5], size_hint=(None, None), height=20, width = 100, text_size = (100, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+
+        elif self.root.ids.second.ids.dataspinner.text == "Sex":
+            self.root.ids.second.ids.user_info.clear_widgets(children=None)
+
+            organized_user_data = list(user_data.values())
+            organized_user_data.sort(key=lambda x: x[2])
+            print(organized_user_data)
+
+            for value in organized_user_data:
+                self.root.ids.second.ids.user_info.add_widget(Button(text=value[0], size_hint=(None, None), height=20, width = 200, text_size = (200, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[1], size_hint=(None, None), height=20, width = 20, text_size = (20, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[2], size_hint=(None, None), height=20, width = 50, text_size = (50, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[3], size_hint=(None, None), height=20, width = 100, text_size = (100, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[4], size_hint=(None, None), height=20, width = 150, text_size = (150, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[5], size_hint=(None, None), height=20, width = 100, text_size = (100, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+
+        elif self.root.ids.second.ids.dataspinner.text == "Sexual Orientation":
+            self.root.ids.second.ids.user_info.clear_widgets(children=None)
+
+            organized_user_data = list(user_data.values())
+            organized_user_data.sort(key=lambda x: x[3])
+            print(organized_user_data)
+
+            for value in organized_user_data:
+                self.root.ids.second.ids.user_info.add_widget(Button(text=value[0], size_hint=(None, None), height=20, width = 200, text_size = (200, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[1], size_hint=(None, None), height=20, width = 20, text_size = (20, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[2], size_hint=(None, None), height=20, width = 50, text_size = (50, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[3], size_hint=(None, None), height=20, width = 100, text_size = (100, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[4], size_hint=(None, None), height=20, width = 150, text_size = (150, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[5], size_hint=(None, None), height=20, width = 100, text_size = (100, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+
+        elif self.root.ids.second.ids.dataspinner.text == "Organize Users":
+            self.root.ids.second.ids.user_info.clear_widgets(children=None)
+
+            for key, value in user_data.items():
+                self.root.ids.second.ids.user_info.add_widget(Button(text=value[0], size_hint=(None, None), height=20, width = 200, text_size = (200, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[1], size_hint=(None, None), height=20, width = 20, text_size = (20, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[2], size_hint=(None, None), height=20, width = 50, text_size = (50, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[3], size_hint=(None, None), height=20, width = 100, text_size = (100, 20), halign = "center"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[4], size_hint=(None, None), height=20, width = 150, text_size = (150, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+                self.root.ids.second.ids.user_info.add_widget(Label(text=value[5], size_hint=(None, None), height=20, width = 100, text_size = (100, 20), halign = "center", markup = True, shorten = True, shorten_from = "right"))
+
+        else:
+            pass
+
+    #Filter Button Logic for Third Screen
+    def FilterButton(self):
+        pass
+
+
+if __name__ == "__main__":
+    MyApp().run()
