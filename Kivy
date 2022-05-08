@@ -1,0 +1,416 @@
+WindowManager:
+
+    FirstScreen:
+        id: first
+    SecondScreen:
+        id: second
+    ThirdScreen:
+        id: third
+
+<FirstScreen>:
+    name: "First"
+
+    GridLayout:
+        cols:1
+        rows:3
+        padding: 15
+
+        GridLayout:
+            cols:1
+            rows:8
+
+            BoxLayout:
+
+                orientation: "horizontal"
+                size: root.width, root.height
+                Label:
+                    text: "Enter Information"
+                    font_size: 10
+
+            BoxLayout:
+
+                orientation: "horizontal"
+                size: root.width, root.height
+                halign: "center"
+                valign: "center"
+                Label:
+                    text: "First Name"
+                    font_size: 10
+
+
+                TextInput:
+                    id: first_name
+                    multiline: False
+                    font_size: 10
+                    write_tab: False
+                    multiline: False
+
+            BoxLayout:
+                orientation: "horizontal"
+                size: root.width, root.height
+                Label:
+                    text: "Last Name"
+                    font_size: 10
+                TextInput:
+                    id: last_name
+                    multiline: False
+                    font_size: 10
+                    write_tab: False
+
+            BoxLayout:
+                orientation: "horizontal"
+                size: root.width, root.height
+
+                Label:
+                    text: "Age"
+                    font_size: 10
+                TextInput:
+                    id: age
+                    multiline: False
+                    font_size: 10
+                    input_filter: "int"
+                    write_tab: False
+
+            BoxLayout:
+                orientation: "horizontal"
+                size: root.width, root.height
+
+                GridLayout:
+                    cols: 2
+                    rows: 1
+                    Label:
+                        text: "E-Mail"
+                        font_size: 10
+
+                    TextInput:
+                        id: e_mail
+                        multiline: False
+                        font_size: 10
+                        write_tab: False
+
+            BoxLayout:
+                orientation: "horizontal"
+                size: root.width, root.height
+
+                GridLayout:
+                    cols: 2
+                    rows: 1
+                    Label:
+                        text: "Phone"
+                        font_size: 10
+
+                    TextInput:
+                        id: phone
+                        multiline: False
+                        font_size: 10
+                        input_filter: "int"
+                        write_tab: False
+
+            BoxLayout:
+                orientation: "horizontal"
+                size: root.width, root.height
+
+                GridLayout:
+                    cols: 2
+                    rows: 1
+                    Label:
+                        text: "Sex"
+                        font_size: 10
+
+                GridLayout:
+                    cols:6
+                    rows:1
+
+                    Label:
+                        text: "M"
+                        font_size: 10
+                        halign: "left"
+                    CheckBox:
+                        id: male
+                        group: "Sex"
+                    Label:
+                        text: "F"
+                        font_size: 10
+                        halign: "left"
+                    CheckBox:
+                        id: female
+                        group: "Sex"
+                    Label:
+                        text: "O"
+                        font_size: 10
+                        halign: "left"
+                    CheckBox:
+                        id: other
+                        group: "Sex"
+
+            BoxLayout:
+                orientation: "horizontal"
+                size: root.width, root.height
+
+                GridLayout:
+                    cols: 2
+                    rows: 1
+
+                    Label:
+                        text: "\nSexual\nOrientation\n(S/O)"
+                        font_size: 10
+                        halign: "center"
+
+                    GridLayout:
+                        cols:1
+                        rows:1
+
+                        Spinner:
+                            id: sexual_orientation
+                            text: "Select"
+                            markup: True
+                            values: "Heterosexual", "Homosexual", "Bisexual/Other"
+                            font_size: 10
+
+        GridLayout:
+            cols:1
+            rows:1
+
+            BoxLayout:
+                orientation: "vertical"
+                size: root.width, root.height
+                Label:
+                    text: "Tell us a little about who you are."
+                    font_size: 10
+                TextInput:
+                    multiline: True
+                    font_size: 10
+                    write_tab: False
+
+        GridLayout:
+            cols:1
+            rows:2
+            padding: (0, 15, 0, 0)
+            spacing: 15
+
+            Button:
+                id: submit_button
+                text: "Submit Information"
+                font_size: 16
+                on_release:
+                    app.SubmitButton()
+
+            Button:
+                text: "Next"
+                font_size: 16
+                on_release:
+                    app.root.current = "Second"
+                    root.manager.transition.direction = "left"
+
+<SecondScreen>:
+    name: "Second"
+
+    GridLayout:
+        cols: 1
+        rows: 2
+        padding: 15
+
+        ScrollView:
+            do_scroll_x: True
+            do_scroll_y: True
+
+            GridLayout:
+                cols: 6
+                id: user_info
+                size_hint_y: None
+                size_hint_x: None
+                size: (600, root.height)
+                height: self.minimum_height
+                cols_minimum: {0:200, 1:20, 2:50, 3:100, 4:150, 5:100}
+
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "center"
+
+            GridLayout:
+                cols: 1
+                rows: 4
+                spacing: 15
+
+                GridLayout:
+                    cols: 6
+                    rows: 1
+                    cols_minimum: {0:200, 1:20, 2:50, 3:100, 4:150, 5:100}
+                    size_hint_x: None
+
+                    Label:
+                        text: "Name"
+                        font_size: 10
+                        halign: "center"
+
+                    Label:
+                        text: "Age"
+                        font_size: 10
+                        halign: "center"
+
+                    Label:
+                        text: "Sex"
+                        font_size: 10
+                        halign: "center"
+
+                    Label:
+                        text: "S/O"
+                        font_size: 10
+                        halign: "center"
+
+                    Label:
+                        text: "E-Mail"
+                        font_size: 10
+                        halign: "center"
+
+                    Label:
+                        text: "Phone"
+                        font_size: 10
+                        halign: "center"
+
+                Spinner:
+                    id: dataspinner
+                    text: "Organize"
+                    markup: True
+                    values: "Organize", "Name", "Age", "Sex", "Sexual Orientation"
+                    font_size: 16
+                    on_text:
+                        app.DataSpinner()
+                    halign: "center"
+
+                Button:
+                    text: "Back"
+                    font_size: 16
+
+                    on_release:
+                        app.root.current = "First"
+                        root.manager.transition.direction = "right"
+
+                Button:
+                    text: "Next"
+                    font_size: 16
+
+                    on_release:
+                        app.root.current = "Third"
+                        root.manager.transition.direction = "left"
+
+<ThirdScreen>:
+    name: "Third"
+
+    GridLayout:
+        cols: 1
+        rows: 2
+        padding: 15
+
+        ScrollView:
+            size: root.width, root.height
+            do_scroll_x: True
+            do_scroll_y: True
+
+            GridLayout:
+                cols: 6
+                id: user_info
+                size_hint_y: None
+                size_hint_x: None
+                size: (600, root.height)
+                height: self.minimum_height
+
+        GridLayout:
+            cols: 1
+            rows: 5
+            spacing: 15
+
+            GridLayout:
+                cols: 5
+                rows: 2
+                spacing: 15
+
+                Label:
+                    text: "Name"
+                    font_size: 10
+
+                Label:
+                    text: "Age"
+                    font_size: 10
+
+                Label:
+                    text: "Sex"
+                    font_size: 10
+
+                Label:
+                    text: "S/O"
+                    font_size: 10
+                    halign: "center"
+
+                Label:
+                    text: "Team\nSize"
+                    font_size: 10
+                    halign: "center"
+
+                CheckBox:
+                    id: name_checkbox
+
+                CheckBox:
+                    id: age_checkbox
+
+                CheckBox:
+                    id: sex_checkbox
+
+                CheckBox:
+                    id: orientation_checkbox
+
+                TextInput:
+                    input_filter: "int"
+                    write_tab: False
+                    multiline: False
+
+            BoxLayout:
+                orientation: "horizontal"
+                size: root.width, root.height
+                spacing: 15
+
+                Button:
+                    text: "Filter"
+                    font_size: 16
+                    halign: "center"
+                    on_release:
+                        app.FilterButton()
+
+                Spinner:
+                    text: "Randomize"
+                    font_size: 16
+                    halign: "center"
+                    values: "Pick Random User", "Randomize Users Into Teams"
+
+                    on_release:
+
+            BoxLayout:
+                orientation: "horizontal"
+                size: root.width, root.height
+                spacing: 15
+
+                Button:
+                    text: "Save Teams"
+                    font_size: 16
+
+                    on_release:
+
+                Button:
+                    text: "Shuffle Teams"
+                    font_size: 16
+
+                    on_release:
+
+            Button:
+                text: "Back"
+                font_size: 16
+
+                on_release:
+                    app.root.current = "Second"
+                    root.manager.transition.direction = "right"
+
+            Button:
+                text: "Next"
+                font_size: 16
+
+                on_release:
