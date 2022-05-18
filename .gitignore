@@ -1,11 +1,11 @@
 import kivy
+import random
 kivy.require("2.0.0")
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.button import Button
 from kivy.uix.label import Label
-from kivy.uix.behaviors.focus import FocusBehavior
 
 user_data = {}
 user_ids = 0
@@ -164,7 +164,31 @@ class MyApp(App):
 
     #Filter Button Logic for Third Screen
     def FilterButton(self):
-        pass
+
+        user_data_filterbutton = user_data
+        users = 0
+
+        for key in user_data_filterbutton:
+            users += 1
+        print(users)
+
+        women = {}
+        men = {}
+        pair = {}
+
+        for key, value in user_data_filterbutton.items():
+            if value[2] == "Male":
+                men.update({key: value})
+            elif value[2] == "Female":
+                women.update({key: value})
+            else:
+                pass
+        print(men)
+        print(women)
+
+
+
+
 
 
 if __name__ == "__main__":
